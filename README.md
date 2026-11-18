@@ -1,5 +1,3 @@
-<img src="assets/icon.svg" width="64" height="64" alt="">
-
 # dents
 
 Your GitHub contribution year as a side-view Swiss Alpine range, named after the
