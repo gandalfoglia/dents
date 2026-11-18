@@ -1,0 +1,44 @@
+name: Dents contribution mountains
+description: Render your GitHub contribution year as a Swiss Alpine range (Dents du Midi), light and dark SVG.
+author: gandalfoglia
+branding:
+  icon: triangle
+  color: red
+
+inputs:
+  github_user_name:
+    description: GitHub username whose contributions to draw.
+    default: ${{ github.repository_owner }}
+  outputs_dir:
+    description: Directory (relative to the workspace) for dents-light.svg and dents-dark.svg.
+    default: dist
+  token:
+    description: Token for the GraphQL API. The default sees public contributions; use a PAT for private ones.
+    default: ${{ github.token }}
+  hour:
+    description: Force the Europe/Zurich hour (0-23) that picks the sky. Empty means the current hour.
+    default: ""
+  scale:
+    description: Height scale, sqrt or log.
+    default: sqrt
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Render dents
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        PYTHONPATH: ${{ github.action_path }}
+        DENTS_USER: ${{ inputs.github_user_name }}
+        DENTS_OUT: ${{ inputs.outputs_dir }}
+        DENTS_HOUR: ${{ inputs.hour }}
+        DENTS_SCALE: ${{ inputs.scale }}
+      run: |
+        args=(--user "$DENTS_USER" --out "$DENTS_OUT" --scale "$DENTS_SCALE")
+        if [ -n "$DENTS_HOUR" ]; then args+=(--hour "$DENTS_HOUR"); fi
+        python -m dents "${args[@]}"
