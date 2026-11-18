@@ -5,7 +5,7 @@ Dents du Midi above Martigny (Valais). Weekly totals become three layered ridges
 the busiest weeks become Haute Cime, Cime de l'Est, Dent Jaune and friends. The
 sky follows the hour in Europe/Zurich: dawn, day, dusk or night.
 
-<p><sub>Live, re-rendered every 6 hours:</sub></p>
+<p><sub>Live, re-rendered four times a day, when the sky changes:</sub></p>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="dist/dents-dark.svg">
@@ -82,7 +82,7 @@ Other flags: `--scale sqrt|log` (default `sqrt`).
    name: dents
    on:
      schedule:
-       - cron: "7 */6 * * *"   # every 6 hours, so the sky changes through the day
+       - cron: "7 4,8,16,20 * * *"   # 05/09/17/21h Zurich (winter): dawn, day, dusk, night
      workflow_dispatch:
    permissions:
      contents: write

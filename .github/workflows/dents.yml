@@ -2,9 +2,10 @@ name: dents
 
 on:
   schedule:
-    # 00/06/12/18 UTC = 01/07/13/19 Zurich in winter, 02/08/14/20 in summer:
-    # night, dawn, day, dusk either way.
-    - cron: "7 */6 * * *"
+    # Once per sky, at the moment it changes. 04/08/16/20 UTC is
+    # 05/09/17/21 Zurich in winter and 06/10/18/22 in summer:
+    # dawn, day, dusk, night either way.
+    - cron: "7 4,8,16,20 * * *"
   workflow_dispatch:
 
 permissions:
