@@ -249,6 +249,20 @@ def choose_labels(peaks: list[Peak], counts: list[int]) -> list[Peak]:
     return chosen
 
 
+MONTHS = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
+
+
+def week_range(start: dt.date) -> str:
+    """'25–31 Oct 2026', '28 Sep–4 Oct 2026', '28 Dec 2025–3 Jan 2026'."""
+    end = start + dt.timedelta(days=6)
+    m0, m1 = MONTHS[start.month - 1], MONTHS[end.month - 1]
+    if start.year != end.year:
+        return f"{start.day} {m0} {start.year}–{end.day} {m1} {end.year}"
+    if start.month != end.month:
+        return f"{start.day} {m0}–{end.day} {m1} {end.year}"
+    return f"{start.day}–{end.day} {m1} {end.year}"
+
+
 def place_labels(chosen, ridge: Ridge, weeks, flag_box) -> list[tuple]:
     """Greedy collision-free placement. Returns (peak, rank, box, anchor, leader_from)."""
     placed: list[tuple] = []
@@ -260,7 +274,7 @@ def place_labels(chosen, ridge: Ridge, weeks, flag_box) -> list[tuple]:
             ay = flag_box[1]
         name = SUMMITS[rank]
         date, count = weeks[pk.index]
-        meta = f"{date.isoformat()} · {count}"
+        meta = f"{week_range(date)} · {count}"
         w = max(len(name) * 4.8, len(meta) * 3.6) + 2
         h = 16.5
         best = None
